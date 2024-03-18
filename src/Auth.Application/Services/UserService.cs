@@ -31,7 +31,7 @@ namespace Auth.Application.Services
 
 
             bool userExist = _userRepository.GetByEmail(viewModel.Email) != null;
-            if (userExist) return new UserResult(false, new List<string> { "User exists" });
+            if (userExist) return new UserResult(false, new List<string> { "Email já utilizado" });
 
             var entity = _mapper.Map<User>(viewModel);
 
@@ -41,7 +41,7 @@ namespace Auth.Application.Services
 
             bool commit = _uow.SaveChanges();
 
-            if (!commit) return new UserResult(false, new List<string> { "Error update database" });
+            if (!commit) return new UserResult(false, new List<string> { "Erro com banco de dados." });
 
             return new UserResult(true);
 

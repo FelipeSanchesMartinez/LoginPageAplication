@@ -7,53 +7,65 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider;
 <PageTitle>Criar Usuario</PageTitle>
 
+<AuthorizeView>
+    <Authorized>
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4 pt-4 border">
+                <div class="mb-3 text-center flex-column">
+                    <h1>Usuario já cadastrado ...</h1>
+                </div>
+            </div>
+        </div>
 
+    </Authorized>
+</AuthorizeView>
 
-<div class="row">
-    <div class="col-lg-4 offset-lg-4 pt-4 border">
-        <EditForm Model="registerUser" OnValidSubmit="Register">
-            <DataAnnotationsValidator />
-            <div class="mb-3 text-center flex-column">
-                <img src="https://th.bing.com/th/id/OIP.PvROcgZvc7MiOohQ-vKn6wAAAA?rs=1&pid=ImgDetMain" style="max-height:5rem" />
-                <h3>Cadastrar</h3>
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4 pt-4 border">
+                <EditForm Model="registerUser" OnValidSubmit="Register">
+                    <DataAnnotationsValidator />
+                    <div class="mb-3 text-center flex-column">
+                        <img src="https://th.bing.com/th/id/OIP.PvROcgZvc7MiOohQ-vKn6wAAAA?rs=1&pid=ImgDetMain" style="max-height:5rem" />
+                        <h3>Cadastrar</h3>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left has-icons-right">
+                            <input @bind-value="registerUser.Email" class="input" type="text" placeholder="email">
+                            <ValidationMessage For="() => registerUser.Email" />
+                            <span class="icon is-small is-left">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input @bind-value="registerUser.Password" class="input" type="Password" placeholder="Senha">
+                            <ValidationMessage For="() => registerUser.Password" />
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="field">
+                        <p class="control has-icons-left">
+                            <input @bind-value="registerUser.ConfirmPassword" class="input" type="Password" placeholder="Confirmar senha">
+                            <ValidationMessage For="() => registerUser.ConfirmPassword" />
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="mb-3 texte-center">
+                        <span class="text-danger">@ErrorMessage</span>
+                    </div>
+                    <div class="mb-3 d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    </div>
+                </EditForm>
             </div>
-            <div class="field">
-                <p class="control has-icons-left has-icons-right">
-                    <input @bind-value="registerUser.Email" class="input" type="text" placeholder="email">
-                    <ValidationMessage For="() => registerUser.Email" />
-                    <span class="icon is-small is-left">
-                        <i class="fa-solid fa-user"></i>
-                    </span>
-                </p>
-            </div>
-            <div class="field">
-                <p class="control has-icons-left">
-                    <input @bind-value="registerUser.Password" class="input" type="Password" placeholder="Senha">
-                    <ValidationMessage For="() => registerUser.Password" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                </p>
-            </div>
-            <div class="field">
-                <p class="control has-icons-left">
-                    <input @bind-value="registerUser.ConfirmPassword" class="input" type="Password" placeholder="Confirmar senha">
-                    <ValidationMessage For="() => registerUser.ConfirmPassword" />
-                    <span class="icon is-small is-left">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                </p>
-            </div>
-            <div class="mb-3 texte-center">
-                <span class="text-danger">@ErrorMessage</span>
-            </div>
-            <div class="mb-3 d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
-            </div>
-        </EditForm>
-    </div>
 
-</div>
+        </div>
+
 
 
 @code {
@@ -65,7 +77,7 @@
         var userResult = UserService.Register(registerUser);
         if (userResult.Success)
         {
-            NavigationManager.NavigateTo("/home");
+            NavigationManager.NavigateTo("/");
         }
         else
         {

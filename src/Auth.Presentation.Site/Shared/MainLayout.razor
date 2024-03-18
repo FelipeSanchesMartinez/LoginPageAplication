@@ -12,12 +12,15 @@
         <AuthorizeView>
             <Authorized>
                  <div class="top-row px-4">
-                    <p>Olá, @context.User.Identity?.Name <button class="button is-warning" @onclick="Logout">Sair...</button></p>
+                    <span class="icon-text">
+                        <span class="icon">
+                            <i class="fa-solid fa-user"></i>
+                        </span>
+                        <span>@context.User.Identity?.Name  <button class="button is-warning" @onclick="Logout">Sair...</button> </span>
+                    </span>
                 </div>
             </Authorized>
-            <NotAuthorized>
-                <p>You're not authorized.</p>
-            </NotAuthorized>
+    
         </AuthorizeView>
         <article class="content px-4">
             @Body
