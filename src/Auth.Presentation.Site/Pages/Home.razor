@@ -1,0 +1,27 @@
+﻿@page "/home"
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject NavigationManager NavigationManager
+<PageTitle>Home</PageTitle>
+
+
+<AuthorizeView>
+    <Authorized>
+        <div class="row">
+            <div class="col-lg-4 offset-lg-4 pt-4 border">
+                <div class="mb-3 text-center flex-column">
+                    <h1>Pagina em construção...</h1>
+                </div>
+                <div class="mb-3 text-center flex-column">
+                    <img src="https://artedereformareconstruir.com.br/images/pagina-em-construcao.jpg" style="max-height:5rem" />
+                </div>  
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <p>não autorizado</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code{
+  
+}

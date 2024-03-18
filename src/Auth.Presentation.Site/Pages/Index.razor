@@ -1,0 +1,96 @@
+﻿@page "/"
+@using Auth.Application.Interfaces
+@using Auth.Application.Services
+@using Auth.Application.ViewModels
+@using Auth.Presentation.Site.Models
+@using Auth.Presentation.Site.Util
+@inject Blazored.LocalStorage.ILocalStorageService Storage;
+@inject IUserService UserService;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject NavigationManager NavigationManager
+
+<PageTitle>Acesso ao sistema</PageTitle>
+
+
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-4 border">
+
+                <EditForm Model="loginUser" OnValidSubmit="Login">
+            <DataAnnotationsValidator />
+            <div class="mb-3 text-center flex-column">
+                <img src="https://images.vexels.com/media/users/3/131263/isolated/preview/af6816ec67ec51da6b275a4aa08d236c-icone-de-cadeado.png" style="max-height:5rem" />
+                <h3>Acessar</h3>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left has-icons-right">
+                            <input @bind-value="loginUser.Email" class="input" type="text" placeholder="Usuario">
+                            <ValidationMessage For="() => loginUser.Email" />
+                    <span class="icon is-small is-left">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                </p>
+            </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                            <input @bind-value="loginUser.Password" class="input" type="Password" placeholder="Senha">
+                            <ValidationMessage For="() => loginUser.Password" />
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                </p>
+            </div>
+            <div class="mb-3 texte-center">
+                <span class="text-danger">@ErrorMessage</span>
+            </div>
+            <div class="mb-3 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Acessar</button>
+            </div>
+        </EditForm>
+        <div class="mb-3 d-grid gap-2">
+            <button @onclick="cadastro" class="btn btn-warning">Cadastre-se</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@code {
+
+    private LoginUserViewModel loginUser = new LoginUserViewModel();
+
+    private string ErrorMessage;
+    public async Task Login()
+    {
+        var user = UserService.Login(loginUser);
+
+        if (user == null)
+        {
+            ErrorMessage=  "Usuario ou senha incorretas";
+        }
+
+        var userInfo = new UserInfo(user.Name, user.Roles == null ? null : user.Roles?.Select(role => role.Name));
+
+        await Storage.SetItemAsync(Constants.USER_INFO_KEY, userInfo);
+
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).AuthenticateUser(userInfo);
+
+        NavigationManager.NavigateTo("/home");
+
+    }
+
+
+
+    public void cadastro()
+    {
+        NavigationManager.NavigateTo("/cadastro");
+    }
+
+}

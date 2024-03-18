@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject NavigationManager NavigationManager
+<PageTitle>Auth.Presentation.Site</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <AuthorizeView>
+            <Authorized>
+                 <div class="top-row px-4">
+                    <p>Olá, @context.User.Identity?.Name <button class="button is-warning" @onclick="Logout">Sair...</button></p>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <p>You're not authorized.</p>
+            </NotAuthorized>
+        </AuthorizeView>
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+@code{
+      public async Task Logout()
+    {
+        await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).Logout();
+        NavigationManager.NavigateTo("/");
+    }
+}
